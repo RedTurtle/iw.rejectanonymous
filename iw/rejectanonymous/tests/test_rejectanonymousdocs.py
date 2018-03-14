@@ -33,11 +33,13 @@ import iw.rejectanonymous
 
 current_dir = os.path.dirname(__file__)
 
+
 def testSetUp(self):
     # self is a base.TestCase
     iw.rejectanonymous.valid_subparts = frozenset((
         'portal_css', 'portal_javascripts', 'passwordreset'
         ))
+
 
 def doc_suite(test_dir, setUp=None, tearDown=None, globs=None):
     """Returns a test suite, based on doctests found in /doctest."""
@@ -76,10 +78,11 @@ def doc_suite(test_dir, setUp=None, tearDown=None, globs=None):
 
     return unittest.TestSuite(suite)
 
+
 def test_suite():
     """returns the test suite"""
     return doc_suite(current_dir, setUp=testSetUp)
 
+
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite')
-

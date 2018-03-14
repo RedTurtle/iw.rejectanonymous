@@ -34,7 +34,8 @@ from iw.rejectanonymous import IPrivateSite
 class IPrivateSiteSchema(ISecuritySchema):
     private_site = Bool(
         title=u'Private site',
-        description=u"Users must login to view the site. Anonymous users are presented the login form",
+        description=u"Users must login to view the site. Anonymous users "
+                    u"are presented the login form",
         default=False,
         required=False,
     )
@@ -45,12 +46,14 @@ class IPrivateSiteSchema(ISecuritySchema):
 def get_private_site(self):
     return IPrivateSite.providedBy(self.portal)
 
+
 SecurityControlPanelAdapter.get_private_site = get_private_site
 
 
 def set_private_site(self, value):
     operator = value and alsoProvides or noLongerProvides
     operator(self.portal, IPrivateSite)
+
 
 SecurityControlPanelAdapter.set_private_site = set_private_site
 
