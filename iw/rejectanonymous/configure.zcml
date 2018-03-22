@@ -1,13 +1,32 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:browser="http://namespaces.zope.org/browser">
-  
+
   <include package="Products.CMFCore" file="permissions.zcml" />
 
   <subscriber
       handler=".insertRejectAnonymousHook"
       for="iw.rejectanonymous.IPrivateSite
            zope.traversing.interfaces.IBeforeTraverseEvent"
+      />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="IW Reject Anonymous"
+      directory="profiles/default"
+      description="Install iw.rejectanonymous plug-in."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      post_handler=".setuphandlers.post_install"
+      />
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="IW Reject Anonymous (uninstall)"
+      directory="profiles/uninstall"
+      description="Uninstall iw.rejectanonymous plug-in."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      post_handler=".setuphandlers.uninstall"
       />
 
   <browser:viewlet
@@ -25,5 +44,12 @@
     class="plone.app.layout.viewlets.common.SearchBoxViewlet"
     permission="cmf.SetOwnProperties"
     />
+
+  <browser:page
+      name="privatesite-settings"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".plonecontrolpanel.PrivateSiteSettingsView"
+      permission="cmf.ManagePortal"
+      />
 
 </configure>

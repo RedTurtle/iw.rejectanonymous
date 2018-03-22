@@ -14,25 +14,39 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; see the file COPYING. If not, write to the
 # Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-"""Patch plone "security" control panel to add a new option
+"""Add a new "Private Site" control panel to manage the new option
 """
-from zope.interface import implementedBy
-from zope.interface import classImplementsOnly
-from zope.interface import alsoProvides
-from zope.interface import noLongerProvides
-from zope.schema import Bool
-from zope.component import getGlobalSiteManager
-from zope.formlib.form import FormFields
+from plone.supermodel import model
+from plone.app.registry.browser.controlpanel import RegistryEditForm
+from plone.app.registry.browser.controlpanel import ControlPanelFormWrapper
+from zope import schema
+from z3c.form import group
+from z3c.form import field
 
-from plone.app.controlpanel.security import SecurityControlPanel
-from plone.app.controlpanel.security import SecurityControlPanelAdapter
-from plone.app.controlpanel.security import ISecuritySchema
+from zope.component import getGlobalSiteManager
+from zope.interface import alsoProvides
+from zope.interface import classImplementsOnly
+from zope.interface import implementedBy
+from zope.interface import noLongerProvides
+from z3c.form import field
+from zope.interface import Interface
+# from zope.formlib.form import FormFields
+
+# from plone.app.controlpanel.security import SecurityControlPanel
+from Products.CMFPlone.controlpanel.browser.security import SecurityControlPanel  # noqa
+
+# from plone.app.controlpanel.security import SecurityControlPanelAdapter
+from Products.CMFPlone.controlpanel.bbb.security import SecurityControlPanelAdapter  # noqa
+
+# from plone.app.controlpanel.security import ISecuritySchema
+from Products.CMFPlone.interfaces import ISecuritySchema
+
 
 from iw.rejectanonymous import IPrivateSite
 
 
-class IPrivateSiteSchema(ISecuritySchema):
-    private_site = Bool(
+class IPrivateSiteSchema(model.Schema):
+    private_site = schema.Bool(
         title=u'Private site',
         description=u"Users must login to view the site. Anonymous users "
                     u"are presented the login form",
@@ -40,8 +54,17 @@ class IPrivateSiteSchema(ISecuritySchema):
         required=False,
     )
 
-# add accessors to adapter
 
+class PrivateSiteSettingsEditForm(RegistryEditForm):
+    schema = IPrivateSiteSchema
+    label = u"Private site settings"
+
+
+class PrivateSiteSettingsView(ControlPanelFormWrapper):
+    form = PrivateSiteSettingsEditForm
+
+
+# add accessors to adapter
 
 def get_private_site(self):
     return IPrivateSite.providedBy(self.portal)
@@ -72,4 +95,10 @@ del _decl
 getGlobalSiteManager().registerAdapter(SecurityControlPanelAdapter)
 
 # re-instanciate form
-SecurityControlPanel.form_fields = FormFields(IPrivateSiteSchema)
+# SecurityControlPanel.form_fields = FormFields(IPrivateSiteSchema)
+
+
+# (Pdb) field.Fields(IPrivateSiteSchema).items()
+# [('enable_self_reg', <Field 'enable_self_reg'>), ('enable_user_pwd_choice', <Field 'enable_user_pwd_choice'>), ('enable_user_folders', <Field 'enable_user_folders'>), ('allow_anon_views_about', <Field 'allow_anon_views_about'>), ('use_email_as_login', <Field 'use_email_as_login'>), ('use_uuid_as_userid', <Field 'use_uuid_as_userid'>), ('private_site', <Field 'private_site'>)]
+
+SecurityControlPanel.form.fields += field.Fields(IPrivateSiteSchema)
