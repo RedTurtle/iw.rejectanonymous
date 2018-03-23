@@ -1,9 +1,11 @@
 Changes log
 ===========
 
-1.2.4 (unreleased)
-------------------
+2.0.0.dev0 (unreleased)
+-----------------------
 
+- Huge refactor and changes made to get the package work with Plone 5.1.
+  [arsenico13]
 - Compliancy with plone.rest: allow anonymous OPTIONS requests
   [ebrehault]
 
