@@ -37,6 +37,7 @@ valid_subparts = frozenset((
 
 valid_subpart_prefixes = frozenset(('++resource++', '++theme++'))
 
+
 # Customization functions
 def addValidIds(*new_ids):
     """A customized Plone site may need to publish other ids as resources
@@ -49,6 +50,7 @@ def addValidIds(*new_ids):
     valid_ids |= set(new_ids)
     return
 
+
 def addValidSubparts(*new_subparts):
     """A customized Plone site may need to publish other subparts for resources
     of the login process. The policy or third party component just need to
@@ -60,6 +62,7 @@ def addValidSubparts(*new_subparts):
     valid_subparts |= set(new_subparts)
     return
 
+
 def addValidSubpartPrefixes(*new_prefixes):
     """A customized Plone site may need to publish other subpart prefixes for
     resources of the login process. The policy or third party component just
@@ -70,14 +73,17 @@ def addValidSubpartPrefixes(*new_prefixes):
     global valid_subpart_prefixes
     valid_subpart_prefixes |= set(new_prefixes)
 
+
 # Utilities
 def isAnonymousUser():
     u = getSecurityManager().getUser()
     return (u is None or u.getUserName() == 'Anonymous User')
 
+
 def getPortalLogoId(portal):
     props = aq_get(portal, 'base_properties', None)
     return props is not None and props.getProperty('logoName', '') or ''
+
 
 def rejectAnonymous(portal, request):
     if request['REQUEST_METHOD'] == 'OPTIONS':
@@ -99,6 +105,7 @@ def rejectAnonymous(portal, request):
                 ):
             raise Unauthorized, "Anonymous rejected"
 
+
 def insertRejectAnonymousHook(portal, event):
     """ """
     try:
@@ -107,4 +114,4 @@ def insertRejectAnonymousHook(portal, event):
         # Make this work in a testrunner
         pass
 
-import iw.rejectanonymous.browser.plonecontrolpanel
+import iw.rejectanonymous.browser.plonecontrolpanel  # noqa
