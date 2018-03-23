@@ -16,33 +16,16 @@
 # Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """Add a new "Private Site" control panel to manage the new option
 """
-from plone.supermodel import model
-from plone.app.registry.browser.controlpanel import RegistryEditForm
-from plone.app.registry.browser.controlpanel import ControlPanelFormWrapper
-from zope import schema
-from z3c.form import group
-from z3c.form import field
-
-from zope.component import getGlobalSiteManager
-from zope.interface import alsoProvides
-from zope.interface import classImplementsOnly
-from zope.interface import implementedBy
-from zope.interface import noLongerProvides
-from z3c.form import field
-from zope.interface import Interface
-# from zope.formlib.form import FormFields
-
-# from plone.app.controlpanel.security import SecurityControlPanel
-from Products.CMFPlone.controlpanel.browser.security import SecurityControlPanel  # noqa
-
-# from plone.app.controlpanel.security import SecurityControlPanelAdapter
-from Products.CMFPlone.controlpanel.bbb.security import SecurityControlPanelAdapter  # noqa
-
-# from plone.app.controlpanel.security import ISecuritySchema
-from Products.CMFPlone.interfaces import ISecuritySchema
-
-
+from iw.rejectanonymous import _
 from iw.rejectanonymous import IPrivateSite
+from iw.rejectanonymous import logger
+from plone import api
+from plone.app.registry.browser.controlpanel import ControlPanelFormWrapper
+from plone.app.registry.browser.controlpanel import RegistryEditForm
+from plone.supermodel import model
+from Products.Five.utilities.marker import mark, erase
+from z3c.form import button
+from zope import schema
 
 
 class IPrivateSiteSchema(model.Schema):
@@ -65,40 +48,23 @@ class PrivateSiteSettingsEditForm(RegistryEditForm):
     schema = IPrivateSiteSettings
     label = u"Private site settings"
 
+    @button.buttonAndHandler(_(u"Save"), name='save')
+    def handleSave(self, action):
+        private_selected = not api.portal.get_registry_record('iw.rejectanonymous.browser.plonecontrolpanel.IPrivateSiteSettings.private_site')  # noqa
+        site = api.portal.get()
+        if private_selected:
+            mark(site, IPrivateSite)
+            logger.info("The site has been set private.")
+        else:
+            erase(site, IPrivateSite)
+            logger.info("The site has been set public.")
+
+        super(PrivateSiteSettingsEditForm, self).handleSave(self, action)
+
+    @button.buttonAndHandler(_(u"Cancel"), name='cancel')
+    def handleCancel(self, action):
+        super(PrivateSiteSettingsEditForm, self).handleCancel(self, action)
+
 
 class PrivateSiteSettingsView(ControlPanelFormWrapper):
     form = PrivateSiteSettingsEditForm
-
-
-# add accessors to adapter
-
-def get_private_site(self):
-    return IPrivateSite.providedBy(self.portal)
-
-
-SecurityControlPanelAdapter.get_private_site = get_private_site
-
-
-def set_private_site(self, value):
-    operator = value and alsoProvides or noLongerProvides
-    operator(self.portal, IPrivateSite)
-
-
-SecurityControlPanelAdapter.set_private_site = set_private_site
-
-SecurityControlPanelAdapter.private_site = property(
-    SecurityControlPanelAdapter.get_private_site,
-    SecurityControlPanelAdapter.set_private_site
-)
-
-# re-register adapter with new interface
-_decl = implementedBy(SecurityControlPanelAdapter)
-_decl -= ISecuritySchema
-_decl += IPrivateSiteSchema
-classImplementsOnly(SecurityControlPanelAdapter, _decl.interfaces())
-del _decl
-
-getGlobalSiteManager().registerAdapter(SecurityControlPanelAdapter)
-
-# re-instanciate form
-SecurityControlPanel.form.fields += field.Fields(IPrivateSiteSchema)

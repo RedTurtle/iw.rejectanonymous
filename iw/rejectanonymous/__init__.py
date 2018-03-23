@@ -19,6 +19,12 @@ from zope.interface import Interface
 from AccessControl import getSecurityManager
 from Acquisition import aq_get
 from zExceptions import Unauthorized
+from zope.i18nmessageid import MessageFactory
+import logging
+
+
+logger = logging.getLogger("iw.rejectanonymous")
+_ = MessageFactory('iw.rejectanonymous')
 
 
 class IPrivateSite(Interface):
