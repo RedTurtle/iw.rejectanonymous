@@ -107,5 +107,4 @@ def insertRejectAnonymousHook(portal, event):
         # Make this work in a testrunner
         pass
 
-import iw.rejectanonymous.plonecontrolpanel
-
+import iw.rejectanonymous.browser.plonecontrolpanel
