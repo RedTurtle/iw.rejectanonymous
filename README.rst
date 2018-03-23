@@ -17,6 +17,9 @@ Works with
 * Plone 3
 * Plone 4
 
+From version 2 ``iw.rejectanonymous`` works with Plone 5.1.
+
+
 Installation
 ============
 
