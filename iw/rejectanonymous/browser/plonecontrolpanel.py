@@ -30,9 +30,8 @@ from zope import schema
 
 class IPrivateSiteSchema(model.Schema):
     private_site = schema.Bool(
-        title=u'Private site',
-        description=u"Users must login to view the site. Anonymous users "
-                    u"are presented the login form.",
+        title=_(u'Private site'),
+        description=_(u"Users must login to view the site. Anonymous users are presented the login form."),  # noqa
         default=False,
         required=False,
     )
@@ -46,7 +45,7 @@ class IPrivateSiteSettings(IPrivateSiteSchema):
 
 class PrivateSiteSettingsEditForm(RegistryEditForm):
     schema = IPrivateSiteSettings
-    label = u"Private site settings"
+    label = _(u"Reject Anonymous settings")
 
     @button.buttonAndHandler(_(u"Save"), name='save')
     def handleSave(self, action):
