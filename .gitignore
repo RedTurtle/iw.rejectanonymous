@@ -1,2 +1,12 @@
 *.pyc
-iw.rejectanonymous.egg-info
+*.egg-info
+.Python
+.installed.cfg
+.mr.developer.cfg
+pip-selfcheck.json
+
+lib/
+parts/
+bin/
+develop-eggs/
+include/
