@@ -4,14 +4,6 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="iw.rejectanonymous">
 
-  <browser:viewlet
-    name="plone.searchbox"
-    for="iw.rejectanonymous.IPrivateSite"
-    manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
-    class="plone.app.layout.viewlets.common.SearchBoxViewlet"
-    permission="cmf.SetOwnProperties"
-    />
-
   <browser:page
       name="privatesite-settings"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
