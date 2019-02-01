@@ -1,4 +1,5 @@
 *.pyc
+*.mo
 *.egg-info
 .Python
 .installed.cfg
