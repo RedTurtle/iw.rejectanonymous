@@ -146,7 +146,7 @@ Or pass it before running a script:
 
 ::
 
-  > DISABLE_REJECTANONYMOUS true bin/instance run script foo.pypi
+  > DISABLE_REJECTANONYMOUS true bin/instance run script foo.py
 
 
 Links
