@@ -135,16 +135,18 @@ If you need to temporary disable rejectanonymous on your site and you don't want
 disable it globally (for example for debugging issues or some scheduled scripts),
 you can set an environment variable `DISABLE_REJECTANONYMOUS`.
 
- For example you can add it to your debug instance like this:
+For example you can add it to your debug instance like this:
 
- ::
+::
+
   environment-vars +=
       DISABLE_REJECTANONYMOUS true
 
 Or pass it before running a script:
 
 ::
-  DISABLE_REJECTANONYMOUS true bin/instance run script foo.pypi
+
+  > DISABLE_REJECTANONYMOUS true bin/instance run script foo.pypi
 
 
 Links
