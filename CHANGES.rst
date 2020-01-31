@@ -1,7 +1,14 @@
 Changes log
 ===========
 
-2.0.0.dev0 (unreleased)
+2.0.0.dev1 (unreleased)
+-----------------------
+
+- Disable rejectanonymous also with an environment variable.
+  [cekk]
+
+
+2.0.0.dev0 (2017-01-01)
 -----------------------
 
 - Huge refactor and changes made to get the package work with Plone 5.1.
