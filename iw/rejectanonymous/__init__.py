@@ -20,7 +20,9 @@ from AccessControl import getSecurityManager
 from Acquisition import aq_get
 from zExceptions import Unauthorized
 from zope.i18nmessageid import MessageFactory
+
 import logging
+import os
 
 
 logger = logging.getLogger("iw.rejectanonymous")
@@ -93,6 +95,8 @@ def getPortalLogoId(portal):
 
 def rejectAnonymous(portal, request):
     if request['REQUEST_METHOD'] == 'OPTIONS':
+        return
+    if os.environ.get('DISABLE_REJECTANONYMOUS'):
         return
     if isAnonymousUser():
         url = request.physicalPathFromURL(request['URL'])

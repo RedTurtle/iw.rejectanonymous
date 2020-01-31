@@ -16,8 +16,7 @@ Works with
 
 * Plone 3
 * Plone 4
-
-From version 2 ``iw.rejectanonymous`` works with Plone 5.1.
+* Plone 5
 
 
 Installation
@@ -41,9 +40,11 @@ Add ``iw.rejectanonymous`` to the ``eggs`` option of your
       iw.rejectanonymous
       ...
 
-Re-run buildout, then open the "Security" control panel of any Plone site of
-your instance. A new **Private site** checkbox lets you (de)activate
-``iw.rejectanonymous``.
+and re-run buildout.
+
+To make a site private, you need to install `iw.rejectanonymous` and check
+"Private site" flag on controlpanel.
+
 
 Customization
 =============
@@ -125,6 +126,26 @@ form). You need for this to add such lines in your site policy ZCML.
 
 See how we hide the ``plone.personal_bar`` and the ``plone.searchbox`` in the
 ``configure.zcml`` of this component.
+
+
+Disable rejectanonymous
+=======================
+
+If you need to temporary disable rejectanonymous on your site and you don't want to
+disable it globally (for example for debugging issues or some scheduled scripts),
+you can set an environment variable `DISABLE_REJECTANONYMOUS`.
+
+ For example you can add it to your debug instance like this:
+
+ ::
+  environment-vars +=
+      DISABLE_REJECTANONYMOUS true
+
+Or pass it before running a script:
+
+::
+  DISABLE_REJECTANONYMOUS true bin/instance run script foo.pypi
+
 
 Links
 =====
